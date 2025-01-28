@@ -13,6 +13,9 @@ services:
       - type: volume
         source: data
         target: /var/lib/postgresql/data
+      - type: bind
+        source: database_init
+        target: /docker-entrypoint-initdb.d
 
   db_ui:
     image: shyim/adminerevo
