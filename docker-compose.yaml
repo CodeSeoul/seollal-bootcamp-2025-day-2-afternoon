@@ -1,4 +1,5 @@
 services:
+
   database:
     image: postgres:17-alpine
     environment:
@@ -12,27 +13,19 @@ services:
       - type: volume
         source: data
         target: /var/lib/postgresql/data
-    networks:
-      - seollal-bootcamp-2025-backend
 
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4:latest
-    restart: always
-    environment:
-      PGADMIN_DEFAULT_EMAIL: fakeemail@codeseoul.org
-      PGADMIN_DEFAULT_PASSWORD: pass
-    networks:
-      - seollal-bootcamp-2025-backend
+  db_ui:
+    image: shyim/adminerevo
     ports:
-      - '80:80'
-    depends_on:
-      - database
-
-networks:
-  seollal-bootcamp-2025-backend:
-    name: seollal-bootcamp-2025-backend
-    external: true
+      - target: 8080
+        published: 8080
+    environment:
+      ADMINER_DEFAULT_DRIVER: pgsql
+      ADMINER_DEFAULT_SERVER: database
+      ADMINER_DEFAULT_DB: ecommerce
+      ADMINER_DEFAULT_USER: root
+      ADMINER_DEFAULT_PASSWORD: root
+      ADMINER_DESIGN: dracula
 
 volumes:
   data:
